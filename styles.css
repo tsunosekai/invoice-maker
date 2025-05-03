@@ -259,6 +259,13 @@ body {
     padding: 5px;
     margin: 0;
     width: 100%; /* 幅を100%に */
+    font-size: 12px; /* プレースホルダーと同じ文字サイズを明示的に設定 */
+}
+
+/* 振込先に入力したテキストのスタイルを維持 */
+.payment-bank-info:not(:empty) {
+    line-height: 1.6; /* プレースホルダーと同じ行間を維持 */
+    font-size: 12px; /* プレースホルダーと同じ文字サイズを維持 */
 }
 
 /* 請求書詳細 */
