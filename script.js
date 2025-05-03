@@ -182,9 +182,9 @@ function setupEditableElements() {
         element.addEventListener('keydown', function(e) {
             // 複数行入力フォームの場合はEnterキーで改行を許可
             if (this.classList.contains('multiline-input')) {
-                // Shift+Enterは通常通り改行
-                if (e.key === 'Enter' && e.shiftKey) {
-                    return; // 通常の動作を許可
+                // 複数行入力フォームの場合は、通常のEnterキーでも改行を許可
+                if (e.key === 'Enter') {
+                    return; // 通常の動作を許可（改行）
                 }
             } else {
                 // 通常の入力フィールドの場合はEnterキーでフォーカスを外す
