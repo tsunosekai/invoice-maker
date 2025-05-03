@@ -450,7 +450,18 @@ function loadDataFromURL() {
         const editableElements = document.querySelectorAll(`.editable[data-param="${key}"]`);
         if (editableElements.length > 0) {
             editableElements.forEach(element => {
-                element.textContent = decodeURIComponent(value);
+                const decodedValue = decodeURIComponent(value);
+                
+                // 複数行入力フォームの場合は改行を保持
+                if (element.classList.contains('multiline-input') || 
+                    element.classList.contains('payment-bank-info') || 
+                    element.classList.contains('notes-content')) {
+                    // textContentを使用して安全に設定（CSSのwhite-space: pre-wrapで改行を表示）
+                    element.textContent = decodedValue;
+                } else {
+                    // 通常の編集可能要素の場合
+                    element.textContent = decodedValue;
+                }
             });
         }
         
