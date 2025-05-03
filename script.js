@@ -180,15 +180,19 @@ function setupEditableElements() {
         
         // Enterキーが押されたときの処理
         element.addEventListener('keydown', function(e) {
-            // 複数行入力フォームの場合はEnterキーで改行を許可
-            if (this.classList.contains('multiline-input')) {
-                // 複数行入力フォームの場合は、通常のEnterキーでも改行を許可
-                if (e.key === 'Enter') {
+            if (e.key === 'Enter') {
+                // Shiftキーを押しながらのEnterは常に改行を許可
+                if (e.shiftKey) {
                     return; // 通常の動作を許可（改行）
                 }
-            } else {
-                // 通常の入力フィールドの場合はEnterキーでフォーカスを外す
-                if (e.key === 'Enter' && !e.shiftKey) {
+                
+                // 複数行入力フォームの場合は通常のEnterキーでも改行を許可
+                if (this.classList.contains('multiline-input') || 
+                    this.classList.contains('payment-bank-info') || 
+                    this.classList.contains('notes-content')) {
+                    return; // 通常の動作を許可（改行）
+                } else {
+                    // 通常の入力フィールドの場合はEnterキーでフォーカスを外す
                     e.preventDefault();
                     this.blur();
                 }
@@ -418,7 +422,40 @@ function updateURLParameters() {
     // 編集可能な要素のパラメータを取得
     document.querySelectorAll('.editable').forEach(element => {
         const paramName = element.dataset.param;
-        const paramValue = element.textContent.trim();
+        
+        // HTMLの内容を取得し、改行を処理する
+        let paramValue = '';
+        
+        // 複数行入力フォームまたは改行を含む可能性のある要素の場合
+        if (element.classList.contains('multiline-input') || 
+            element.classList.contains('payment-bank-info') || 
+            element.classList.contains('notes-content')) {
+            
+            // innerHTML内の<br>や<div>を改行コードに変換
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = element.innerHTML;
+            
+            // <br>タグを改行コードに置換
+            const html = tempDiv.innerHTML;
+            paramValue = html.replace(/<br\s*\/?>/gi, '\n');
+            
+            // <div>や<p>の開始タグを改行コードに置換
+            paramValue = paramValue.replace(/<div[^>]*>/gi, '\n').replace(/<p[^>]*>/gi, '\n');
+            
+            // HTMLタグを除去
+            const tempDiv2 = document.createElement('div');
+            tempDiv2.innerHTML = paramValue;
+            paramValue = tempDiv2.textContent;
+            
+            // 連続する改行を1つにまとめる
+            paramValue = paramValue.replace(/\n+/g, '\n');
+            
+            // 先頭と末尾の空白と改行を削除
+            paramValue = paramValue.replace(/^\s+|\s+$/g, '');
+        } else {
+            // 通常の編集可能要素の場合
+            paramValue = element.textContent.replace(/^\s+|\s+$/g, '');
+        }
         
         if (paramValue) {
             params.set(paramName, encodeURIComponent(paramValue));
