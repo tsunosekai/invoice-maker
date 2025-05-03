@@ -238,7 +238,7 @@ body {
 }
 
 .payment-bank-cell {
-    height: 56px; /* 2行分の高さを確保 */
+    height: 70px; /* 2行分の高さを確保 */
 }
 
 .payment-cell .editable {
@@ -255,7 +255,7 @@ body {
     height: 48px; /* 固定高さを設定 */
     white-space: pre-wrap; /* 改行を保持 */
     word-wrap: break-word; /* 長い単語を折り返す */
-    line-height: 1.5; /* 請求先フォームと同じ行間 */
+    line-height: 1.6; /* 請求先フォームと同じ行間 */
     padding: 5px;
     margin: 0;
     width: 100%; /* 幅を100%に */
@@ -557,6 +557,9 @@ body {
     white-space: pre-wrap; /* 改行を保持 */
     overflow: hidden;
     text-overflow: ellipsis;
+    display: flex; /* フレックスボックスとして表示 */
+    align-items: center; /* 縦方向に中央揃え */
+    line-height: 1.6; /* 請求先フォームと同じ行間 */
 }
 
 /* 編集不可の要素 */
@@ -608,6 +611,8 @@ body {
 .sender-info .multiline-input {
     min-height: 100px;
     text-align: right;
+    margin-left: auto; /* 要素自体を右寄せにする */
+    width: 100%; /* 親要素の幅いっぱいに広げる */
 }
 
 /* 請求内容詳細テーブルのセル内の編集可能要素 */
