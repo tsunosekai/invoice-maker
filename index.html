@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>請求書メーカー</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+<div class="invoice-container" style="display: flex; flex-direction: column;">
+            <h1 class="invoice-title">請求書</h1>
+            
+            <!-- 2行目：左側が請求先、右側が請求日と請求書番号 -->
+            <div class="invoice-header">
+                <div class="client-info">
+                    <div class="editable multiline-input" data-param="clientInfo" data-placeholder="株式会社サンプル 御中
+100-0001
+東京都千代田区千代田1-1-1
+千代田ビル
+営業部 山田 太郎 様"></div>
+                </div>
+                
+                <div class="invoice-info">
+                    <table class="info-table">
+                        <tr>
+                            <td class="info-label">請求日</td>
+                            <td class="info-value"><input type="date" class="date-input" id="invoiceDate" data-param="invoiceDate"></td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">請求書番号</td>
+                            <td class="info-value"><div class="editable" data-param="invoiceNumber" data-placeholder="INV-2023-0001"></div></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- 3行目：左側が件名と請求金額のテーブル、右側が請求元 -->
+            <div class="invoice-row">
+                <div class="invoice-left">
+                    <div class="invoice-description">
+                        <p>下記の通りご請求申し上げます。</p>
+                    </div>
+                    <table class="project-table">
+                        <tr>
+                            <td class="project-label">件名</td>
+                            <td class="project-value"><div class="editable" data-param="projectName" data-placeholder="4月分 コンサルティング料"></div></td>
+                        </tr>
+                    </table>
+                    
+                    <table class="invoice-summary">
+                        <tr>
+                            <td class="summary-header">小計</td>
+                            <td class="summary-header">消費税</td>
+                            <td class="summary-header total">請求金額</td>
+                        </tr>
+                        <tr>
+                            <td><div class="editable" data-param="subtotal" data-placeholder="100,000円"></div></td>
+                            <td><div class="editable" data-param="tax" data-placeholder="10,000円"></div></td>
+                            <td class="total"><div class="editable total" data-param="total" data-placeholder="110,000円"></div></td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="sender-info">
+                    <div class="editable multiline-input" data-param="senderInfo" data-placeholder="鈴木 一郎
+123-4567
+東京都新宿区新宿1-1-1
+マンション新宿 101
+印章"></div>
+                </div>
+            </div>
+            
+            <div class="payment-info">
+                <table class="payment-table">
+                    <tr>
+                        <td class="payment-header">入金期日</td>
+                        <td class="payment-header">振込先</td>
+                    </tr>
+                    <tr>
+                        <td class="payment-cell">
+                            <input type="date" class="date-input" id="paymentDueDate" data-param="paymentDueDate">
+                        </td>
+                        <td class="payment-cell payment-bank-cell">
+                            <div class="editable payment-bank-info" data-param="bankInfo" data-placeholder="○○銀行 △△支店 普通預金
+口座番号：1234567
+口座名義：スズキ イチロウ"></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="invoice-details">
+                <table class="details-table">
+                    <thead>
+                        <tr>
+                            <th>摘要</th>
+                            <th>数量</th>
+                            <th>単価</th>
+                            <th>明細金額</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invoice-items">
+                        <tr>
+                            <td><div class="editable" data-param="item1Name" data-placeholder="コンサルティング業務"></div></td>
+                            <td><div class="editable" data-param="item1Quantity" data-placeholder="1人日"></div></td>
+                            <td><div class="editable" data-param="item1Price" data-placeholder="100,000"></div></td>
+                            <td><div class="editable" data-param="item1Amount" data-placeholder="100,000"></div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="editable" data-param="item2Name"></div></td>
+                            <td><div class="editable" data-param="item2Quantity"></div></td>
+                            <td><div class="editable" data-param="item2Price"></div></td>
+                            <td><div class="editable" data-param="item2Amount"></div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="editable" data-param="item3Name"></div></td>
+                            <td><div class="editable" data-param="item3Quantity"></div></td>
+                            <td><div class="editable" data-param="item3Price"></div></td>
+                            <td><div class="editable" data-param="item3Amount"></div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="editable" data-param="item4Name"></div></td>
+                            <td><div class="editable" data-param="item4Quantity"></div></td>
+                            <td><div class="editable" data-param="item4Price"></div></td>
+                            <td><div class="editable" data-param="item4Amount"></div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="editable" data-param="item5Name"></div></td>
+                            <td><div class="editable" data-param="item5Quantity"></div></td>
+                            <td><div class="editable" data-param="item5Price"></div></td>
+                            <td><div class="editable" data-param="item5Amount"></div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="editable" data-param="item6Name"></div></td>
+                            <td><div class="editable" data-param="item6Quantity"></div></td>
+                            <td><div class="editable" data-param="item6Price"></div></td>
+                            <td><div class="editable" data-param="item6Amount"></div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="editable" data-param="item7Name"></div></td>
+                            <td><div class="editable" data-param="item7Quantity"></div></td>
+                            <td><div class="editable" data-param="item7Price"></div></td>
+                            <td><div class="editable" data-param="item7Amount"></div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="editable" data-param="item8Name"></div></td>
+                            <td><div class="editable" data-param="item8Quantity"></div></td>
+                            <td><div class="editable" data-param="item8Price"></div></td>
+                            <td><div class="editable" data-param="item8Amount"></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="tax-calculation">
+                <table class="tax-table">
+                    <tr>
+                        <td class="tax-label-left">内訳</td>
+                        <td class="tax-label-right">10%対象(税抜)</td>
+                        <td class="tax-value"><div class="editable" data-param="taxableAmount10" data-placeholder="100,000円"></div></td>
+                    </tr>
+                    <tr>
+                        <td class="tax-label-left"></td>
+                        <td class="tax-label-right">10%消費税</td>
+                        <td class="tax-value"><div class="editable" data-param="taxAmount10" data-placeholder="10,000円"></div></td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="notes-section">
+                <div class="notes-title">備考</div>
+                <div class="editable multiline-input notes-content" data-param="notes" data-placeholder="※振込期限は請求日より30日以内でお願いします。
+※振込手数料は御社負担でお願いいたします。"></div>
+            </div>
+            
+            <div class="page-number">1 / 1</div>
+        </div>
+        
+        <div class="controls">
+            <button id="download-pdf">PDFダウンロード</button>
+            <button id="download-image">画像ダウンロード</button>
+            <button id="reset-form">リセット</button>
+            <button id="generate-link">共有リンク生成</button>
+            <div id="share-link-container" style="display: none;">
+                <p>以下のリンクを共有すると、現在の入力内容が保存されます：</p>
+                <input type="text" id="share-link" readonly>
+                <button id="copy-link">コピー</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF生成用のライブラリ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
