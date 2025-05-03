@@ -557,7 +557,6 @@ body {
     white-space: pre-wrap; /* 改行を保持 */
     overflow: hidden;
     text-overflow: ellipsis;
-    display: flex; /* フレックスボックスとして表示 */
     align-items: center; /* 縦方向に中央揃え */
     line-height: 1.6; /* 請求先フォームと同じ行間 */
 }
