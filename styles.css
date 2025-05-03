@@ -406,17 +406,94 @@ body {
     visibility: hidden !important;
 }
 
-/* PDF出力時のテーブル枠線を細くする */
-.pdf-mode .invoice-summary td,
+/* PDF出力時のテーブル設定 - 備考のテーブルと同様の設定に統一 */
+.pdf-mode .invoice-summary,
 .pdf-mode .payment-table,
+.pdf-mode .details-table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border: 0.25px solid #000 !important;
+}
+
+/* PDF出力時のセル枠線を調整 - 外側の枠線のみ表示 */
+.pdf-mode .invoice-summary td,
 .pdf-mode .payment-header,
 .pdf-mode .payment-cell,
 .pdf-mode .details-table th,
-.pdf-mode .details-table td,
-.pdf-mode .tax-table,
-.pdf-mode .notes-section,
+.pdf-mode .details-table td {
+    border: none !important;
+}
+
+/* 必要な内部のセル間の枠線のみを細く表示 */
+/* 請求書サマリーの内部枠線 */
+.pdf-mode .invoice-summary tr:not(:last-child) td {
+    border-bottom: 0.25px solid #000 !important;
+}
+
+.pdf-mode .invoice-summary td:not(:last-child) {
+    border-right: 0.25px solid #000 !important;
+}
+
+/* 支払い情報の内部枠線 */
+.pdf-mode .payment-header {
+    border-bottom: 0.25px solid #000 !important;
+}
+
+/* 入金期日と振込先の間の枠線 */
+.pdf-mode .payment-table td:first-child {
+    border-right: 0.25px solid #000 !important;
+}
+
+/* 請求書詳細の内部枠線 */
+/* ヘッダー行の下の枠線 */
+.pdf-mode .details-table tr:first-child th {
+    border-bottom: 0.25px solid #000 !important;
+}
+
+/* その他の行の下の枠線 */
+.pdf-mode .details-table tr:not(:last-child) td {
+    border-bottom: 0.25px solid #000 !important;
+}
+
+/* 列間の枠線 */
+.pdf-mode .details-table th:not(:last-child),
+.pdf-mode .details-table td:not(:last-child) {
+    border-right: 0.25px solid #000 !important;
+}
+
+/* 備考欄と内訳テーブルの設定 */
+.pdf-mode .notes-section {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border: 0.25px solid #000 !important;
+}
+
 .pdf-mode .notes-title {
-    border-width: 0.5px !important;
+    border-bottom: 0.25px solid #000 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+.pdf-mode .tax-table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border: 0.25px solid #000 !important;
+}
+
+/* PDF出力時に件名テーブルの枠線を非表示 */
+.pdf-mode .project-table,
+.pdf-mode .project-table td,
+.pdf-mode .project-table .project-label,
+.pdf-mode .project-table .project-value {
+    border: none !important;
+}
+
+/* PDF出力時に内訳テーブルの内部セルの枠線を非表示に - テーブルの周りだけ表示 */
+.pdf-mode .tax-table .tax-label-left,
+.pdf-mode .tax-table .tax-label-right,
+.pdf-mode .tax-table .tax-value {
+    border: none !important;
 }
 
 /* ページ番号 */
