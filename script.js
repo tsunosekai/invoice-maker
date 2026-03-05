@@ -8,16 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // 日付フィールドの初期化
     setupDateFields();
     
-    // URLパラメータからデータを読み込む
-    loadDataFromURL();
-    
-    // ボタンのイベントリスナーを設定
-    document.getElementById('download-pdf').addEventListener('click', downloadPDF);
-    document.getElementById('download-image').addEventListener('click', downloadImage);
-    document.getElementById('reset-form').addEventListener('click', resetForm);
-    document.getElementById('generate-link').addEventListener('click', generateShareLink);
-    document.getElementById('copy-link').addEventListener('click', copyShareLink);
-    
     // 税込みモードトグルのイベントリスナー
     const taxToggle = document.getElementById('taxInclusiveMode');
     if (taxToggle) {
@@ -33,10 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // URLパラメータがある場合のみ初期計算を実行
+    // 税込みモードの復元（loadDataFromURLより先に実行）
     const params = new URLSearchParams(window.location.search);
-    
-    // 税込みモードの復元
     if (params.has('taxMode') && params.get('taxMode') === 'inclusive') {
         const toggle = document.getElementById('taxInclusiveMode');
         const label = document.getElementById('taxModeLabel');
@@ -45,10 +33,16 @@ document.addEventListener('DOMContentLoaded', function() {
             label.textContent = '税込み額入力';
         }
     }
+
+    // URLパラメータからデータを読み込む
+    loadDataFromURL();
     
-    if (params.toString() !== '') {
-        calculateTotals();
-    }
+    // ボタンのイベントリスナーを設定
+    document.getElementById('download-pdf').addEventListener('click', downloadPDF);
+    document.getElementById('download-image').addEventListener('click', downloadImage);
+    document.getElementById('reset-form').addEventListener('click', resetForm);
+    document.getElementById('generate-link').addEventListener('click', generateShareLink);
+    document.getElementById('copy-link').addEventListener('click', copyShareLink);
 });
 
 // 日付フィールドの初期化
