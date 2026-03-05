@@ -18,8 +18,34 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('generate-link').addEventListener('click', generateShareLink);
     document.getElementById('copy-link').addEventListener('click', copyShareLink);
     
+    // 税込みモードトグルのイベントリスナー
+    const taxToggle = document.getElementById('taxInclusiveMode');
+    if (taxToggle) {
+        taxToggle.addEventListener('change', function() {
+            const label = document.getElementById('taxModeLabel');
+            if (this.checked) {
+                label.textContent = '税込み額入力';
+            } else {
+                label.textContent = '税抜き額入力';
+            }
+            calculateTotals();
+            updateURLParameters();
+        });
+    }
+
     // URLパラメータがある場合のみ初期計算を実行
     const params = new URLSearchParams(window.location.search);
+    
+    // 税込みモードの復元
+    if (params.has('taxMode') && decodeURIComponent(params.get('taxMode')) === 'inclusive') {
+        const toggle = document.getElementById('taxInclusiveMode');
+        const label = document.getElementById('taxModeLabel');
+        if (toggle) {
+            toggle.checked = true;
+            label.textContent = '税込み額入力';
+        }
+    }
+    
     if (params.toString() !== '') {
         calculateTotals();
     }
@@ -250,20 +276,33 @@ function calculateItemAmount(itemNumber) {
 // 小計、消費税、請求金額を計算する関数
 function calculateTotals() {
     // 明細金額を取得して合計を計算
-    let subtotal = 0;
+    let itemTotal = 0;
     const maxItems = 8; // 明細の最大数
     
     for (let i = 1; i <= maxItems; i++) {
         const amountElement = document.querySelector(`[data-param="item${i}Amount"]`);
         if (amountElement && amountElement.textContent.trim()) {
-            subtotal += parseAmount(amountElement.textContent);
+            itemTotal += parseAmount(amountElement.textContent);
         }
     }
     
-    // 消費税計算（10%）
     const taxRate = 0.1;
-    const taxAmount = Math.floor(subtotal * taxRate); // 小数点以下切り捨て
-    const total = subtotal + taxAmount;
+    const taxToggle = document.getElementById('taxInclusiveMode');
+    const isTaxInclusive = taxToggle && taxToggle.checked;
+    
+    let subtotal, taxAmount, total;
+    
+    if (isTaxInclusive) {
+        // 税込みモード: 入力額が税込み → 税抜きと消費税を逆算
+        total = itemTotal;
+        subtotal = Math.floor(total / (1 + taxRate)); // 税抜き額（切り捨て）
+        taxAmount = total - subtotal; // 消費税
+    } else {
+        // 税抜きモード（従来）: 入力額が税抜き → 消費税を加算
+        subtotal = itemTotal;
+        taxAmount = Math.floor(subtotal * taxRate); // 小数点以下切り捨て
+        total = subtotal + taxAmount;
+    }
     
     // 計算結果を表示
     const subtotalElement = document.querySelector('[data-param="subtotal"]');
@@ -461,6 +500,12 @@ function updateURLParameters() {
             params.set(paramName, encodeURIComponent(paramValue));
         }
     });
+    
+    // 税込みモードのパラメータを保存
+    const taxToggle = document.getElementById('taxInclusiveMode');
+    if (taxToggle && taxToggle.checked) {
+        params.set('taxMode', encodeURIComponent('inclusive'));
+    }
     
     // 日付入力フィールドのパラメータを取得
     document.querySelectorAll('.date-input').forEach(element => {
