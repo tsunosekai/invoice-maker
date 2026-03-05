@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const params = new URLSearchParams(window.location.search);
     
     // 税込みモードの復元
-    if (params.has('taxMode') && decodeURIComponent(params.get('taxMode')) === 'inclusive') {
+    if (params.has('taxMode') && params.get('taxMode') === 'inclusive') {
         const toggle = document.getElementById('taxInclusiveMode');
         const label = document.getElementById('taxModeLabel');
         if (toggle) {
@@ -504,7 +504,7 @@ function updateURLParameters() {
     // 税込みモードのパラメータを保存
     const taxToggle = document.getElementById('taxInclusiveMode');
     if (taxToggle && taxToggle.checked) {
-        params.set('taxMode', encodeURIComponent('inclusive'));
+        params.set('taxMode', 'inclusive');
     }
     
     // 日付入力フィールドのパラメータを取得
