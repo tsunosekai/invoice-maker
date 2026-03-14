@@ -113,6 +113,7 @@ function setupReadOnlyElements() {
         'total',           // 請求金額
         'taxableAmount10', // 内訳の10%対象(税抜)
         'taxAmount10'      // 10%消費税
+        // withholdingTax は手動入力なので含めない
     ];
     
     // 明細金額も編集不可に設定
@@ -176,7 +177,8 @@ function setupEditableElements() {
             if (paramName && (
                 paramName.includes('Amount') || 
                 paramName.includes('Price') || 
-                paramName.includes('Quantity')
+                paramName.includes('Quantity') ||
+                paramName === 'withholdingTax'
             )) {
                 calculateTotals();
             }
@@ -297,6 +299,16 @@ function calculateTotals() {
         taxAmount = Math.floor(subtotal * taxRate); // 小数点以下切り捨て
         total = subtotal + taxAmount;
     }
+    
+    // 源泉徴収税額を取得（手動入力）
+    const withholdingTaxElement = document.querySelector('[data-param="withholdingTax"]');
+    let withholdingTax = 0;
+    if (withholdingTaxElement && withholdingTaxElement.textContent.trim()) {
+        withholdingTax = parseAmount(withholdingTaxElement.textContent);
+    }
+    
+    // 源泉徴収額を差し引いた請求金額
+    total = total - withholdingTax;
     
     // 計算結果を表示
     const subtotalElement = document.querySelector('[data-param="subtotal"]');
